@@ -2,9 +2,8 @@ use rust_htslib::bam::record::{Aux};
 use rust_htslib::{bam, bam::Read};
 
 pub struct Data {
-    pub lengths: Option<Vec<u128>>,
-    pub all_counts: usize,
-    pub qualities: Option<Vec<f64>>,
+    pub lengths: Option<Vec<u64>>,
+    pub qualities: Option<Vec<f64>>
 }
 
 pub fn extract(args: &crate::Cli) -> (Data, rust_htslib::bam::Header) {
@@ -41,13 +40,11 @@ pub fn extract(args: &crate::Cli) -> (Data, rust_htslib::bam::Header) {
     bam.set_threads(args.threads)
         .expect("Failure setting decompression threads");
 
-    let mut all_counts = 0;
     for read in bam
         .rc_records()
         .map(|r| r.expect("Failure parsing Bam file"))
-        .inspect(|_| all_counts += 1)
     {
-        lengths.push(read.seq_len() as u128);
+        lengths.push(read.seq_len() as u64);
         qualities.push(get_rq_tag(&read).into());
     }
     // sort vectors in descending order (required for N50/N75)
@@ -55,8 +52,7 @@ pub fn extract(args: &crate::Cli) -> (Data, rust_htslib::bam::Header) {
     (
         Data {
             lengths: Some(lengths),
-            all_counts,
-            qualities: Some(qualities),
+            qualities: Some(qualities)
             },
         header,
     )
@@ -68,7 +64,7 @@ fn get_rq_tag(record: &bam::Record) -> f32 {
     match record.aux(b"rq") {
         Ok(value) => match value {
             Aux::Float(v) =>
-                v,
+                1.0 - v,
 		_ => todo!()
         },
         Err(_e) => -1.0,

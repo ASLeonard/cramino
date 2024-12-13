@@ -1,5 +1,5 @@
 
-pub fn get_n(lengths: &Vec<u128>, nb_bases_total: u128, percentile: f64) -> u128 {
+pub fn get_n(lengths: &Vec<u64>, nb_bases_total: u64, percentile: f64) -> u64 {
     let mut acc = 0;
     for val in lengths.iter() {
         acc += *val;
