@@ -1,12 +1,11 @@
 [package]
 name = "cramino"
 version = "0.15.1"
-edition = "2021"
-authors = ["Wouter De Coster decosterwouter@gmail.com"]
+edition = "2024"
+authors = ["Wouter De Coster <decosterwouter@gmail.com>", "ASLeonard <alexander.leonard@usys.ethz.ch>"]
 license = "MIT"
 description = "A tool to quickly extract quality metrics from bam or cram files"
 readme = "README.md"
-homepage = "https://github.com/wdecoster/cramino"
 repository = "https://github.com/wdecoster/cramino"
 keywords = ["ont", "pacbio", "cram", "bam", "alignment"]
 categories = ["command-line-utilities", "science"]
